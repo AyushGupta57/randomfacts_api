@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, Path
-from json_dep import load_json
+from json_functions import load_json
 import random
 from typing import Annotated
 from pydantic import BaseModel
@@ -22,7 +22,7 @@ async def random_fact():
     return facts_data[str(random.randrange(0, len(facts_data)))]
 
 @app.get("/get-n-random-facts/{n_facts}")
-async def n_random_facts(n: int):
+async def n_random_facts(n: Annotated[int, Path(title="Number of facts to be returned", ge=0, le=len(facts_data))]):
     ret_facts = dict()
     i = 0
     while i <= n:
